@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //relasi one to one ke booking
+    public function booking()
+    {
+        return $this->hasOne(Review::class);
+    }
 }

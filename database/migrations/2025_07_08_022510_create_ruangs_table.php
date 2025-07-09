@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('ruangs', function (Blueprint $table) {
             $table->id();
+            $table->string('cover');
+            $table->string('nama');
+            $table->string('kapasitas');
+            $table->text('fasilitas');
             $table->timestamps();
         });
     }
@@ -25,3 +29,4 @@ return new class extends Migration
         Schema::dropIfExists('ruangs');
     }
 };
+    

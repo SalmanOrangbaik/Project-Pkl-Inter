@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal');
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
+            $table->enum('status', ['pending', 'completed', 'cancel']);
+            $table->unsignedBigInteger('ruang_id');
+            $table->foreign('ruang_id')->references('id')->on('ruangs')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
