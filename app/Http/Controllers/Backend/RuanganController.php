@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Ruangan;
+use App\Models\Ruang;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class RuanganController extends Controller
 {
@@ -13,7 +15,12 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        //
+        $ruang = Ruang::latest()->get();
+        $title    = 'Hapus Data!';
+        $text     = "Apakah Anda Yakin??";
+        confirmDelete($title, $text);
+
+        return view('backend.ruangan.index', compact('ruang'));
     }
 
     /**
@@ -21,7 +28,7 @@ class RuanganController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.ruangan.create');
     }
 
     /**
@@ -29,7 +36,29 @@ class RuanganController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama'      => 'required|string|max:255|unique:ruangs',
+            'kapasitas' => 'required|string|max:255',
+            'fasilitas' => 'required|string',
+            'cover'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $ruang = new Ruang();
+
+        if ($request->hasFile('cover')) {
+            $file       = $request->file('cover');
+            $randomName = Str::random(20) . '.' . $file->getClientOriginalExtension();
+            $coverPath  = $file->storeAs('cover-ruangan', $randomName, 'public');
+            $ruang->cover = $coverPath;
+        }
+
+        $ruang->nama      = $request->nama;
+        $ruang->kapasitas = $request->kapasitas;
+        $ruang->fasilitas = $request->fasilitas;
+        $ruang->save();
+
+        toast('Data ruangan berhasil disimpan.', 'success');
+        return redirect()->route('backend.ruang.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -37,7 +66,8 @@ class RuanganController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $ruang = Ruang::findOrFail($id);
+        return view('backend.ruangan.show', compact('ruang'));
     }
 
     /**
@@ -45,7 +75,8 @@ class RuanganController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $ruang = Ruang::findOrFail($id);
+        return view('backend.ruangan.edit', compact('ruang'));
     }
 
     /**
@@ -53,7 +84,34 @@ class RuanganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $ruang = Ruang::findOrFail($id);
+
+        $request->validate([
+        'nama'      => 'required|string|max:255|:ruangs,nama,' . $ruang->id,
+        'kapasitas' => 'required|string|max:255',
+        'fasilitas' => 'required|string',
+        'cover'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+        if ($request->hasFile('cover')) {
+        // Hapus cover lama
+        if ($ruang->cover && Storage::disk('public')->exists($ruang->cover)) {
+            Storage::disk('public')->delete($ruang->cover);
+        }
+
+        $file = $request->file('cover');
+        $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
+        $coverPath = $file->storeAs('cover-ruangan', $filename, 'public');
+        $ruang->cover = $coverPath;
+    }
+
+        $ruang->nama = $request->nama;
+        $ruang->kapasitas = $request->kapasitas;
+        $ruang->fasilitas = $request->fasilitas;
+        $ruang->save();
+
+        toast('Data ruangan berhasil diupdate.', 'success');
+        return redirect()->route('backend.ruang.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -61,6 +119,8 @@ class RuanganController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $ruang = Ruang::findOrFail($id);
+        $ruang->delete();
+        return redirect()->route('backend.ruang.index')->with('success', 'Ruang berhasil dihapus');
     }
 }

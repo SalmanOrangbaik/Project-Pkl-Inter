@@ -8,7 +8,7 @@
         <span class="nav-link">Dashboard</span>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{route('backend.index')}}">
           <span class="menu-title">Dashboard</span>
           <i class="icon-screen-desktop menu-icon"></i>
         </a>
@@ -21,6 +21,8 @@
         <div class="collapse" id="tables">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"> <a class="nav-link" href="{{route('backend.user.index')}}">User Table</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('backend.ruang.index')}}">Ruang Table</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('backend.jadwal.index')}}">Jadwal Table</a></li>
           </ul>
         </div>
       </li>
