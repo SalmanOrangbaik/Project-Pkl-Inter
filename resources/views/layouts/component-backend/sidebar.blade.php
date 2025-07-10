@@ -23,6 +23,7 @@
             <li class="nav-item"> <a class="nav-link" href="{{route('backend.user.index')}}">User Table</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{route('backend.ruang.index')}}">Ruang Table</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{route('backend.jadwal.index')}}">Jadwal Table</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('backend.booking.index')}}">Booking Table</a></li>
           </ul>
         </div>
       </li>

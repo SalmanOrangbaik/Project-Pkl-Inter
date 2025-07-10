@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->enum('status', ['pending', 'completed', 'cancel']);
+            $table->enum('status', ['pending', 'selesai', 'ditolak', 'diterima'])->default('pending');
             $table->unsignedBigInteger('ruang_id');
             $table->foreign('ruang_id')->references('id')->on('ruangs')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');

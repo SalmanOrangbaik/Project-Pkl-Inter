@@ -17,6 +17,6 @@ class Booking extends Model
     //relasi ke ruangs
     public function ruang()
     {
-        return $this->belongsTo(Ruang::class);
+        return $this->belongsTo(Ruang::class, 'ruang_id');
     }
 }

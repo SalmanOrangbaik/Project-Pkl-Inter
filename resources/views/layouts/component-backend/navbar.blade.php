@@ -2,17 +2,17 @@
   <!-- partial:partials/_navbar.html -->
   <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo" href="index.html">
-        <img src="{{asset ('assets/images/logo.svg')}}" alt="logo" class="logo-dark" />
-        <img src="{{asset ('assets/images/logo-light.svg')}}" alt="logo-light" class="logo-light">
+      <a class="navbar-brand brand-logo" href="{{route('backend.index')}}">
+        <img src="{{asset ('assets/images/logo.png')}}" alt="logo" class="logo-dark" style="height: 50%;"  />
+        <img src="{{asset ('assets/images/logo.png')}}" alt="logo-light" class="logo-light">
       </a>
-      <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('assets/images/logo-mini.svg')}}" alt="logo" /></a>
+      <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('assets/images/logo.png')}}" alt="logo" /></a>
       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
         <span class="icon-menu"></span>
       </button>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">
-      <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome stellar dashboard!</h5>
+      <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Selamat Datang di SIRUANG</h5>
       <ul class="navbar-nav navbar-nav-right">
         <form class="search-form d-none d-md-block" action="#">
           <i class="icon-magnifier"></i>

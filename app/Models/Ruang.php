@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Booking;
+use App\Models\Jadwal;
 use Illuminate\Database\Eloquent\Model;
 
 class Ruang extends Model
