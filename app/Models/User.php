@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isAdmin',
     ];
 
     /**
@@ -38,17 +39,15 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+    'email_verified_at' => 'datetime',
+    'isAdmin' => 'boolean',
+];
+
 
     //relasi one to one ke booking
     public function booking()
     {
-        return $this->hasOne(Review::class);
+        return $this->hasOne(Booking::class);
     }
 }

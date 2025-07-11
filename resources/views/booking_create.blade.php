@@ -1,23 +1,17 @@
 @extends('layouts.frontend')
+
 @section('content')
     <div class="container-fluid contact bg-light py-5">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.1s">
                     <h1 class="display-4 mb-4">Booking Ruangan</h1>
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
                 </div>
+
                 <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
                     <form action="{{ route('booking.store') }}" method="POST">
-
                         @csrf
-                        @if (session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
+
                         <div class="row g-3">
                             <div class="col-12">
                                 <div class="form-floating">
@@ -61,4 +55,7 @@
             </div>
         </div>
     </div>
+
+    {{-- Tambahkan ini untuk SweetAlert --}}
+    @include('sweetalert::alert')
 @endsection

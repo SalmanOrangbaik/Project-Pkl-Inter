@@ -1,4 +1,5 @@
 @extends('layouts.backend')
+
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -18,23 +19,17 @@
                                                 style="float: right">Tambah Data</a>
 
                                             <div class="card-body">
-                                                @if (session('success'))
-                                                    <div class="alert alert-success alert-dismissible fade show"
-                                                        role="alert">
-                                                        {{ session('success') }}
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                @endif
                                                 <table class="table table-responsive">
                                                     <thead>
-                                                        <th>No</th>
-                                                        <th>Ruangan</th>
-                                                        <th>Tanggal</th>
-                                                        <th>Jam Mulai</th>
-                                                        <th>Jam Selesai</th>
-                                                        <th>Keterangan</th>
-                                                        <th>Aksi</th>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Ruangan</th>
+                                                            <th>Tanggal</th>
+                                                            <th>Jam Mulai</th>
+                                                            <th>Jam Selesai</th>
+                                                            <th>Keterangan</th>
+                                                            <th>Aksi</th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($jadwal as $data)
@@ -46,16 +41,17 @@
                                                                 <td>{{ $data->jam_selesai }}</td>
                                                                 <td>{{ $data->keterangan }}</td>
                                                                 <td>
-                                                                    <a href="{{route('backend.jadwal.edit', $data->id)}}"
+                                                                    <a href="{{ route('backend.jadwal.edit', $data->id) }}"
                                                                         class="btn btn-sm btn-warning">Edit</a> |
-                                                                    <a href="{{route('backend.jadwal.show', $data->id)}}"
+                                                                    <a href="{{ route('backend.jadwal.show', $data->id) }}"
                                                                         class="btn btn-sm btn-primary">Show</a> |
-                                                                    <form action="{{route('backend.jadwal.destroy', $data->id)}}"
+                                                                    <form
+                                                                        action="{{ route('backend.jadwal.destroy', $data->id) }}"
                                                                         method="POST" style="display:inline;">
                                                                         @csrf
                                                                         @method('DELETE')
-                                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                                            onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-danger btn-delete">Hapus</button>
                                                                     </form>
                                                                 </td>
                                                             </tr>
@@ -63,6 +59,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -70,4 +67,29 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Yakin ingin hapus?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

@@ -22,6 +22,7 @@
     <!-- Bootstrap & Custom Style -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
 
@@ -53,5 +54,9 @@
     <script src="{{ asset('assets/lib/lightbox/js/lightbox.min.js') }}"></script>
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    @yield('js')
+    @stack('scripts')
+    @include('sweetalert::alert')
 </body>
 </html>

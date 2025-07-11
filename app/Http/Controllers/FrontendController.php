@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Jadwal;
 use App\Models\Ruang;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
 {

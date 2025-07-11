@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Ruang;
+use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BookingUserController extends Controller
 {
@@ -26,43 +29,62 @@ class BookingUserController extends Controller
 
         $tanggalInput = Carbon::parse($request->tanggal)->format('Y-m-d');
         $hariIni = Carbon::now()->format('Y-m-d');
-    
+
         if ($tanggalInput === $hariIni) {
             $jamSelesai = Carbon::parse($request->tanggal . ' ' . $request->jam_selesai);
             if ($jamSelesai->lt(Carbon::now())) {
-                return back()
-                    ->withInput()
-                    ->with('error', 'Waktu booking sudah lewat. Silakan pilih waktu yang valid.');
+                Alert::toast('Waktu booking sudah lewat. Silakan pilih waktu yang valid.', 'error')->autoClose(4000);
+                return back()->withInput();
             }
         }
-    
-        // Cek bentrok  
+
+        //  Cek bentrok booking lain
         $bentrok = Booking::where('ruang_id', $request->ruang_id)
             ->where('tanggal', $request->tanggal)
             ->where(function ($data) use ($request) {
-                $data->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
-                      ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
-                      ->orWhere(function ($booking) use ($request) {
-                          $booking->where('jam_mulai', '<=', $request->jam_mulai)
-                            ->where('jam_selesai', '>=', $request->jam_selesai);
-                      });
+                $data
+                    ->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhere(function ($booking) use ($request) {
+                        $booking->where('jam_mulai', '<=', $request->jam_mulai)->where('jam_selesai', '>=', $request->jam_selesai);
+                    });
             })
             ->exists();
-    
+
         if ($bentrok) {
-            return back()->withInput()->with('error', 'Jadwal bentrok! Silakan pilih jam lain.');
+            Alert::toast('Jadwal bentrok! Silakan pilih jam lain.', 'error')->autoClose(4000);
+            return back()->withInput();
         }
-    
-        // Simpan booking
+
+        // Cek bentrok dengan jadwal tetap berdasarkan tanggal sama
+        $bentrokJadwal = Jadwal::where('ruang_id', $request->ruang_id)
+            ->where('tanggal', $request->tanggal) // cek tanggal yang sama
+            ->where(function ($data) use ($request) {
+                $data
+                    ->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhere(function ($jadwal) use ($request) {
+                        $jadwal->where('jam_mulai', '<=', $request->jam_mulai)->where('jam_selesai', '>=', $request->jam_selesai);
+                    });
+            })
+            ->exists();
+
+        if ($bentrokJadwal) {
+            Alert::toast('Jadwal bentrok dengan jadwal tetap ruangan.', 'error')->autoClose(4000);
+            return back()->withInput();
+        }
+
+        // simpann booking
         Booking::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'ruang_id' => $request->ruang_id,
             'tanggal' => $request->tanggal,
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,
             'status' => 'pending',
         ]);
-    
-        return redirect()->route('booking.create')->with('success', 'Booking berhasil dikirim.');
+
+        Alert::toast('Booking berhasil dikirim.', 'success')->autoClose(3000);
+        return redirect()->route('booking.create');
     }
 }

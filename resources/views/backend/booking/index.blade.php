@@ -14,7 +14,8 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-15">
                                         <div class="card">
-                                            <a href="{{ route('backend.booking.export') }}" class="btn btn-sm btn-danger me-2">
+                                            <a href="{{ route('backend.booking.export') }}"
+                                                class="btn btn-sm btn-danger me-2">
                                                 <i class="fa fa-file-pdf"></i> Export PDF
                                             </a>
                                             <a href="{{ route('backend.booking.create') }}" class="btn btn-outline-dark"
@@ -47,20 +48,24 @@
                                                                 <td>{{ $data->ruang->nama ?? '-' }}</td>
                                                                 <td>{{ $data->user->name ?? '-' }}</td>
                                                                 <td>{{ $data->tanggal }}</td>
-                                                                <td>{{ \Carbon\Carbon::parse($data->jam_mulai)->format('h:i A') }}</td>
-                                                                <td>{{ \Carbon\Carbon::parse($data->jam_selesai)->format('h:i A') }}</td>
-                                                                <td>{{$data->status}}</td>
+                                                                <td>{{ \Carbon\Carbon::parse($data->jam_mulai)->format('h:i A') }}
+                                                                </td>
+                                                                <td>{{ \Carbon\Carbon::parse($data->jam_selesai)->format('h:i A') }}
+                                                                </td>
+                                                                <td>{{ $data->status }}</td>
                                                                 <td>
-                                                                    <a href="{{route('backend.booking.edit', $data->id)}}"
+                                                                    <a href="{{ route('backend.booking.edit', $data->id) }}"
                                                                         class="btn btn-sm btn-warning">Edit</a> |
-                                                                    <a href="{{route('backend.booking.show', $data->id)}}"
+                                                                    <a href="{{ route('backend.booking.show', $data->id) }}"
                                                                         class="btn btn-sm btn-primary">Show</a> |
-                                                                    <form action="{{route('backend.booking.destroy', $data->id)}}"
-                                                                        method="POST" style="display:inline;">
+                                                                    <form
+                                                                        action="{{ route('backend.booking.destroy', $data->id) }}"
+                                                                        method="POST" style="display:inline;"
+                                                                        class="form-delete">
                                                                         @csrf
                                                                         @method('DELETE')
-                                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                                            onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-danger btn-delete">Hapus</button>
                                                                     </form>
                                                                 </td>
                                                             </tr>
@@ -79,3 +84,28 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault(); // cegah form submit otomatis
+            const form = $(this).closest('form');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus booking ini?',
+                text: "Data akan dihapus permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // submit form jika konfirmasi OK
+                }
+            });
+        });
+    </script>
+@endpush

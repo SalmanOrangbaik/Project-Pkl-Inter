@@ -61,8 +61,10 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="{{asset ('assets/js/dashboard.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('js')
     @stack('scripts')
+    @include('sweetalert::alert')
     <!-- End custom js for this page -->
   </body>
 </html>

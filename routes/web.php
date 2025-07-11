@@ -9,6 +9,8 @@ use App\Http\Controllers\Backend\RuanganController;
 use App\Http\Controllers\Backend\JadwalController;
 use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\BookingUserController;
+use Illuminate\Support\Facades\Auth;
+
 
 
 Route::get('/', [FrontendController::class, 'index']);

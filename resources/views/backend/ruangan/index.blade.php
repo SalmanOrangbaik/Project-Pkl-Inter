@@ -47,16 +47,18 @@
                                                                         style="width: 150px; height: auto; border-radius: 8px;">
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{route('backend.ruang.edit', $data->id)}}"
+                                                                    <a href="{{ route('backend.ruang.edit', $data->id) }}"
                                                                         class="btn btn-sm btn-warning">Edit</a> |
-                                                                    <a href="{{route('backend.ruang.show', $data->id)}}"
+                                                                    <a href="{{ route('backend.ruang.show', $data->id) }}"
                                                                         class="btn btn-sm btn-primary">Show</a> |
-                                                                    <form action="{{route('backend.ruang.destroy', $data->id)}}" method="POST"
-                                                                        style="display:inline;">
+                                                                    <form
+                                                                        action="{{ route('backend.ruang.destroy', $data->id) }}"
+                                                                        method="POST" style="display:inline;"
+                                                                        class="delete-form">
                                                                         @csrf
                                                                         @method('DELETE')
-                                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                                            onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-danger btn-delete">Hapus</button>
                                                                     </form>
                                                                 </td>
 
@@ -73,3 +75,25 @@
                     </div>
                 </div>
             @endsection
+
+            @push('scripts')
+                <script>
+                    document.querySelectorAll('.btn-delete').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            Swal.fire({
+                                title: 'Yakin ingin hapus?',
+                                text: "Data yang dihapus tidak bisa dikembalikan!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'Ya, hapus!',
+                                cancelButtonText: 'Batal'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.closest('form').submit();
+                                }
+                            });
+                        });
+                    });
+                </script>
+            @endpush
