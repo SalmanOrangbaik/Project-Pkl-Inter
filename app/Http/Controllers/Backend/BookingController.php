@@ -8,12 +8,22 @@ use App\Models\Booking;
 use App\Models\Ruang;
 use App\Models\User;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function export()
+    {
+        
+    $bookings = Booking::all();
+
+    $pdf = Pdf::loadView('backend.booking.pdfbookings', ['booking' => $bookings]);
+    return $pdf->download('laporan-data-bookings.pdf');
+    }
+
     public function index()
     {
 
@@ -22,7 +32,7 @@ class BookingController extends Controller
             $now = Carbon::now();
         
             // Update semua booking "pending" yang sudah lewat waktunya jadi "selesai"
-            Booking::where('status', 'pending')
+            Booking::whereIn('status', ['pending', 'diterima'])
                 ->where(function ($data) use ($now) {
                     $data->whereDate('tanggal', '<', $now->toDateString())
                         ->orWhere(function ($waktu) use ($now) {
@@ -78,6 +88,23 @@ class BookingController extends Controller
     
         if ($bentrok) {
             return back()->withInput()->with('error', 'Jadwal bentrok! Silakan pilih jam lain.');
+        }
+
+        //harus jeda 30
+        $lastBooking = Booking::where('ruang_id', $request->ruang_id)
+            ->where('tanggal', $request->tanggal)
+            ->where('jam_selesai', '<=', $request->jam_mulai)
+            ->orderBy('jam_selesai', 'desc')
+            ->first();
+
+        if ($lastBooking) {
+            $lastEnd = Carbon::parse($request->tanggal . ' ' . $lastBooking->jam_selesai);
+            $newStart = Carbon::parse($request->tanggal . ' ' . $request->jam_mulai);
+
+            if ($lastEnd->gt($newStart->subMinutes(30))) {
+                toast('Harus ada jeda minimal 30 menit setelah pemakaian sebelumnya!', 'error');
+                return back()->withInput()->with('error', 'Harus ada jeda minimal 30 menit setelah pemakaian sebelumnya!');
+            }
         }
     
         // Simpan booking

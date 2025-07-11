@@ -14,7 +14,9 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-15">
                                         <div class="card">
-
+                                            <a href="{{ route('backend.booking.export') }}" class="btn btn-sm btn-danger me-2">
+                                                <i class="fa fa-file-pdf"></i> Export PDF
+                                            </a>
                                             <a href="{{ route('backend.booking.create') }}" class="btn btn-outline-dark"
                                                 style="float: right">Tambah Data</a>
 

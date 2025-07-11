@@ -21,10 +21,10 @@
       
         <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
           <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-            <img class="img-xs rounded-circle ms-2" src="{{asset ('assets/images/faces/face8.jpg')}}" alt="Profile image"> <span class="font-weight-normal"> {{Auth::user()->name}} </span></a>
+            <img class="img-xs rounded-circle ms-2" src="{{asset ('assets/images/faces/face12.jpg')}}" alt="Profile image"> <span class="font-weight-normal"> {{Auth::user()->name}} </span></a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
             <div class="dropdown-header text-center">
-              <img class="img-md rounded-circle" src="{{asset ('assets/images/faces/face5.jpg')}}" alt="Profile image">
+              <img class="img-md rounded-circle" src="{{asset ('assets/images/faces/face12.jpg')}}" alt="Profile image">
               <p class="mb-1 mt-3">{{Auth::user()->name}}</p>
               <p class="font-weight-light text-muted mb-0">{{Auth::user()->email}}</p>
             </div>

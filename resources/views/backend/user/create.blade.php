@@ -50,6 +50,16 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                            <div class="form-group mb-5 mt-3">
+                                                <label>Role</label>
+                                                <select name="role" class="form-control @error('role') is-invalid @enderror">
+                                                    <option value="0">User</option>
+                                                    <option value="1">Admin</option>
+                                                </select>
+                                                @error('role')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
 
                                                 <button type="submit" class="btn btn-primary mb-3 mt-2">Simpan</button>
                                         </form>

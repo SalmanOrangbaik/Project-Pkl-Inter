@@ -5,6 +5,7 @@ use App\Models\Booking;
 use App\Models\Ruang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class BookingUserController extends Controller
 {
@@ -22,6 +23,18 @@ class BookingUserController extends Controller
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
             'ruang_id' => 'required|exists:ruangs,id',
         ]);
+
+        $tanggalInput = Carbon::parse($request->tanggal)->format('Y-m-d');
+        $hariIni = Carbon::now()->format('Y-m-d');
+    
+        if ($tanggalInput === $hariIni) {
+            $jamSelesai = Carbon::parse($request->tanggal . ' ' . $request->jam_selesai);
+            if ($jamSelesai->lt(Carbon::now())) {
+                return back()
+                    ->withInput()
+                    ->with('error', 'Waktu booking sudah lewat. Silakan pilih waktu yang valid.');
+            }
+        }
     
         // Cek bentrok  
         $bentrok = Booking::where('ruang_id', $request->ruang_id)

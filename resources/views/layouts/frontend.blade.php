@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Investa - Investment Website Template</title>
+    <title>SIRUANG</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Google Fonts -->
@@ -35,23 +35,6 @@
     @include('layouts.component-frontend.footer')
 
     <!-- Copyright -->
-    <div class="container-fluid copyright py-4">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-md-0">
-                    <span class="text-body">
-                        <a href="#" class="border-bottom text-primary">
-                            <i class="fas fa-copyright text-light me-2"></i>Your Site Name
-                        </a>, All right reserved.
-                    </span>
-                </div>
-                <div class="col-md-6 text-center text-md-end text-body">
-                    Designed By <a class="border-bottom text-primary" href="https://htmlcodex.com">HTML Codex</a>
-                    Distributed By <a class="border-bottom text-primary" href="https://themewagon.com">ThemeWagon</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-lg-square back-to-top">

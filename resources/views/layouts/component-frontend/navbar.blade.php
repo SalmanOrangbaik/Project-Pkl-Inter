@@ -13,7 +13,7 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-white py-3 px-4">
-                    <a href="index.html" class="navbar-brand p-0">
+                    <a href="{{ url('/')}}" class="navbar-brand p-0">
                        <img src="{{asset ('assets/images/logo.png')}}" alt="logo" style="width: 40%; height: auto;">
                         <!-- <img src="img/logo.png" alt="Logo"> -->
                     </a>
@@ -25,9 +25,9 @@
                         <div class="navbar-nav ms-auto py-0">
                             <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
                             <a href="{{ route('booking.create') }}" class="nav-item nav-link {{ request()->is('booking/create') ? 'active' : '' }}">Booking</a>
-                            <a href="service.html" class="nav-item nav-link">Jadwal</a>
+                            <a href="{{ route('booking_ruangan')}}" class="nav-item nav-link">Ruangan</a>
                             @auth
-                            <a href="project.html" class="nav-item nav-link">Riwayat</a>
+                            <a href="{{ route('booking_riwayat')}}" class="nav-item nav-link">Riwayat</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
