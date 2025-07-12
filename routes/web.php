@@ -24,7 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/booking/create', [BookingUserController::class, 'create'])->name('booking.create');
     Route::post('/booking', [BookingUserController::class, 'store'])->name('booking.store');
 });
-Route::patch('/backend/booking/{id}/status', [BookingController::class, 'updateStatus'])->name('backend.booking.updateStatus');
 Route::get('booking-export', [BookingController::class, 'export'])->name('booking.export');
 
 

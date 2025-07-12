@@ -24,13 +24,15 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     @yield('styles')
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
     @include('layouts.component-frontend.navbar')
 
     <!-- Content -->
+    <div class="flex-fill">
     @yield('content')
+    </div>
 
     <!-- Footer -->
     @include('layouts.component-frontend.footer')
@@ -41,6 +43,8 @@
     <a href="#" class="btn btn-primary btn-lg-square back-to-top">
         <i class="fa fa-arrow-up"></i>
     </a>
+
+    
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

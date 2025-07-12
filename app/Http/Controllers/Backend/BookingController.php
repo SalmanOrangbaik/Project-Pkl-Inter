@@ -139,8 +139,8 @@ class BookingController extends Controller
             'ruang_id' => 'required|exists:ruangs,id',
             'user_id' => 'required|exists:users,id',
             'tanggal' => 'required|date',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+            'jam_mulai' => 'required|',
+            'jam_selesai' => 'required|after:jam_mulai',
             'status' => 'required|in:pending,selesai,ditolak,diterima',
         ]);
 
@@ -183,7 +183,7 @@ class BookingController extends Controller
         $tanggal = Carbon::parse($request->tanggal);
         $hariBooking = $tanggal->locale('id')->isoFormat('dddd');
 
-        $jadwalTetaps = \App\Models\Jadwal::where('ruang_id', $request->ruang_id)->get();
+        $jadwalTetaps = Jadwal::where('ruang_id', $request->ruang_id)->get();
 
         foreach ($jadwalTetaps as $jadwal) {
             $hariJadwal = Carbon::parse($jadwal->tanggal)->locale('id')->isoFormat('dddd');
@@ -207,7 +207,7 @@ class BookingController extends Controller
         ]);
 
         toast('Data booking berhasil diperbarui.', 'success')->autoClose(3000);
-        return redirect()->route('backend.booking.index');
+        return redirect()->route('backend.booking.index'); //ini yg bagian balik ke halaman index
     }
 
     public function destroy(string $id)
@@ -219,17 +219,5 @@ class BookingController extends Controller
         return redirect()->route('backend.booking.index');
     }
 
-    public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,selesai,ditolak,diterima',
-        ]);
 
-        $booking = Booking::findOrFail($id);
-        $booking->status = $request->status;
-        $booking->save();
-
-        toast('Status booking berhasil diperbarui.', 'success')->autoClose(3000);
-        return redirect()->back();
-    }
 }

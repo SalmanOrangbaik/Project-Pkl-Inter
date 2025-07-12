@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        //set default carbon ke bahasa Indonesia
+        Carbon::setLocale('id');
+
+        //(opsional) kalau pake system local laravel
+        App::setLocale('id');
     }
 }

@@ -15,8 +15,17 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="date" class="form-control" name="tanggal" required>
-                                    <label for="tanggal">Tanggal</label>
+                                    <select name="ruang_id" class="form-select" required>
+                                        <option disabled {{ old('ruang_id', $ruang_id ?? '') == '' ? 'selected' : '' }}>
+                                            Pilih Ruangan</option>
+                                        @foreach ($ruang as $data)
+                                            <option value="{{ $data->id }}"
+                                                {{ old('ruang_id', $ruang_id ?? '') == $data->id ? 'selected' : '' }}>
+                                                {{ $data->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="ruang_id">Ruangan</label>
                                 </div>
                             </div>
 
@@ -34,15 +43,11 @@
                                 </div>
                             </div>
 
+
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <select name="ruang_id" class="form-select" required>
-                                        <option selected disabled>Pilih Ruangan</option>
-                                        @foreach ($ruang as $data)
-                                            <option value="{{ $data->id }}">{{ $data->nama }}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="ruang_id">Ruangan</label>
+                                    <input type="date" class="form-control" name="tanggal" required>
+                                    <label for="tanggal">Tanggal</label>
                                 </div>
                             </div>
 

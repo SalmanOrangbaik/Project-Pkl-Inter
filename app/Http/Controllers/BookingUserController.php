@@ -12,10 +12,12 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class BookingUserController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
+        $ruang_id = $request->query('ruang_id'); // Ambil dari URL
         $ruang = Ruang::all();
-        return view('booking_create', compact('ruang'));
+
+        return view('booking_create', compact('ruang', 'ruang_id'));
     }
 
     public function store(Request $request)

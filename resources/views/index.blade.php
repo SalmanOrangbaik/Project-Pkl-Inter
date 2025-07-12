@@ -64,20 +64,29 @@
 </div>
     {{-- Calender End --}}
 
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales-all.global.min.js"></script>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
+      locale: 'id', // Bahasa Indonesia
       height: 'auto',
       aspectRatio: 1.6,
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,listMonth'
+      },
+      buttonText: {
+        today: 'Hari ini',
+        month: 'Bulan',
+        week: 'Minggu',
+        day: 'Hari',
+        list: 'List'
       },
       events: @json($events),
       eventColor: '#3A87AD',
@@ -87,6 +96,7 @@
     calendar.render();
   });
 </script>
+
 
 
 @endsection

@@ -6,6 +6,15 @@
         <div class="card">
             <div class="card-body">
                 <h4>Edit Booking</h4>
+                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+               <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                 <form action="{{ route('backend.booking.update', $booking->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -53,7 +62,7 @@
                             <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending</option>
                             <option value="selesai" {{ $booking->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
                             <option value="ditolak" {{ $booking->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                            <option value="diterima" {{ $booking->status == 'ditolak' ? 'selected' : '' }}>Diterima</option>
+                            <option value="diterima" {{ $booking->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
                         </select>
                     </div>
 

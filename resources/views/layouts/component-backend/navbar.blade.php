@@ -14,10 +14,7 @@
     <div class="navbar-menu-wrapper d-flex align-items-center">
       <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Selamat Datang di SIRUANG</h5>
       <ul class="navbar-nav navbar-nav-right">
-        <form class="search-form d-none d-md-block" action="#">
-          <i class="icon-magnifier"></i>
-          <input type="search" class="form-control" placeholder="Search Here" title="Search here">
-        </form>
+
       
         <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
           <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
