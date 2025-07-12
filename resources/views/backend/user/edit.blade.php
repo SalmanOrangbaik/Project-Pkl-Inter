@@ -63,6 +63,20 @@
                                                         @enderror
                                                     </div>
 
+                                                     <div class="form-group mb-5 mt-3">
+                                                        <label>Role</label>
+                                                        <select name="role"
+                                                            class="form-control @error('role') is-invalid @enderror">
+                                                            <option value="0"
+                                                                {{ old('role') == '0' ? 'selected' : '' }}>User</option>
+                                                            <option value="1"
+                                                                {{ old('role') == '1' ? 'selected' : '' }}>Admin</option>
+                                                        </select>
+                                                        @error('role')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
 
                                                     <button type="submit" class="btn btn-primary mb-3 mt-2">Update</button>
                                                 </form>

@@ -37,8 +37,10 @@
                                                                 <td>{{ $loop->iteration }}</td>
                                                                 <td>{{ $data->ruang->nama ?? '-' }}</td>
                                                                 <td>{{ $data->tanggal }}</td>
-                                                                <td>{{ $data->jam_mulai }}</td>
-                                                                <td>{{ $data->jam_selesai }}</td>
+                                                                <td>{{ \Carbon\Carbon::parse($data->jam_mulai)->format('h:i A') }}
+                                                                </td>
+                                                                <td>{{ \Carbon\Carbon::parse($data->jam_selesai)->format('h:i A') }}
+                                                                </td>
                                                                 <td>{{ $data->keterangan }}</td>
                                                                 <td>
                                                                     <a href="{{ route('backend.jadwal.edit', $data->id) }}"

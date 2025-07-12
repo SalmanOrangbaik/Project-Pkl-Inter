@@ -4,81 +4,101 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-8 grid-margin stretch-card w-100">
+                <div class="col-md-12 grid-margin stretch-card w-100">
                     <div class="card">
                         <div class="card-body performane-indicator-card">
-                            <div class="d-sm-flex">
-                                <h4 class="card-title flex-shrink-1">Data Booking</h4>
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h4 class="card-title">Data Booking</h4>
+                                <div>
+                                    <a href="{{ route('backend.booking.export', request()->query()) }}" class="btn btn-sm btn-danger me-2">
+                                        <i class="fa fa-file-pdf"></i> Export PDF
+                                    </a>
+                                    <a href="{{ route('backend.booking.create') }}" class="btn btn-sm btn-outline-dark">
+                                        Tambah Data
+                                    </a>
+                                </div>
                             </div>
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-15">
-                                        <div class="card">
-                                            <a href="{{ route('backend.booking.export') }}"
-                                                class="btn btn-sm btn-danger me-2">
-                                                <i class="fa fa-file-pdf"></i> Export PDF
-                                            </a>
-                                            <a href="{{ route('backend.booking.create') }}" class="btn btn-outline-dark"
-                                                style="float: right">Tambah Data</a>
 
-                                            <div class="card-body">
-                                                @if (session('success'))
-                                                    <div class="alert alert-success alert-dismissible fade show"
-                                                        role="alert">
-                                                        {{ session('success') }}
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                @endif
-                                                <table class="table table-responsive">
-                                                    <thead>
-                                                        <th>No</th>
-                                                        <th>Ruangan</th>
-                                                        <th>Penanggung Jawab</th>
-                                                        <th>Tanggal</th>
-                                                        <th>Jam Mulai</th>
-                                                        <th>Jam Selesai</th>
-                                                        <th>Status</th>
-                                                        <th>Aksi</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($bookings as $data)
-                                                            <tr>
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $data->ruang->nama ?? '-' }}</td>
-                                                                <td>{{ $data->user->name ?? '-' }}</td>
-                                                                <td>{{ $data->tanggal }}</td>
-                                                                <td>{{ \Carbon\Carbon::parse($data->jam_mulai)->format('h:i A') }}
-                                                                </td>
-                                                                <td>{{ \Carbon\Carbon::parse($data->jam_selesai)->format('h:i A') }}
-                                                                </td>
-                                                                <td>{{ $data->status }}</td>
-                                                                <td>
-                                                                    <a href="{{ route('backend.booking.edit', $data->id) }}"
-                                                                        class="btn btn-sm btn-warning">Edit</a> |
-                                                                    <a href="{{ route('backend.booking.show', $data->id) }}"
-                                                                        class="btn btn-sm btn-primary">Show</a> |
-                                                                    <form
-                                                                        action="{{ route('backend.booking.destroy', $data->id) }}"
-                                                                        method="POST" style="display:inline;"
-                                                                        class="form-delete">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger btn-delete">Hapus</button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div> {{-- end card-body --}}
-                                        </div> {{-- end card --}}
+                            {{-- Form Filter --}}
+                            <form method="GET" action="{{ route('backend.booking.index') }}" class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <select name="ruang_id" class="form-select">
+                                            <option value="">-- Filter Ruangan --</option>
+                                            @foreach ($ruangs as $ruang)
+                                                <option value="{{ $ruang->id }}" {{ request('ruang_id') == $ruang->id ? 'selected' : '' }}>
+                                                    {{ $ruang->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <select name="status" class="form-select">
+                                            <option value="">-- Filter Status --</option>
+                                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                                            <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                            <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button type="submit" class="btn btn-sm btn-primary me-2">Terapkan Filter</button>
+                                        <a href="{{ route('backend.booking.index') }}" class="btn btn-sm btn-info">Reset</a>
                                     </div>
                                 </div>
-                            </div> {{-- end container --}}
-                        </div>
-                    </div>
+                            </form>
+
+                            {{-- Tabel Booking --}}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Ruangan</th>
+                                            <th>Penanggung Jawab</th>
+                                            <th>Tanggal</th>
+                                            <th>Jam Mulai</th>
+                                            <th>Jam Selesai</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($bookings as $data)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $data->ruang->nama ?? '-' }}</td>
+                                                <td>{{ $data->user->name ?? '-' }}</td>
+                                                <td>{{ $data->tanggal }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->jam_mulai)->format('h:i A') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->jam_selesai)->format('h:i A') }}</td>
+                                                <td>{{ ucfirst($data->status) }}</td>
+                                                <td>
+                                                    <a href="{{ route('backend.booking.edit', $data->id) }}"
+                                                        class="btn btn-sm btn-warning">Edit</a>
+                                                    <a href="{{ route('backend.booking.show', $data->id) }}"
+                                                        class="btn btn-sm btn-primary">Show</a>
+                                                    <form action="{{ route('backend.booking.destroy', $data->id) }}"
+                                                        method="POST" style="display:inline;" class="form-delete">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger btn-delete">Hapus</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="8" class="text-center">Tidak ada data booking ditemukan.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div> {{-- end table-responsive --}}
+                        </div> {{-- end card-body --}}
+                    </div> {{-- end card --}}
                 </div>
             </div>
         </div>

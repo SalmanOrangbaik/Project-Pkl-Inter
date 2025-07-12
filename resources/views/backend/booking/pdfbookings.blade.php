@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -47,7 +47,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($booking as $i => $data)
+            @forelse ($booking as $i => $data)
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $data->user->name ?? '-' }}</td>
@@ -55,9 +55,13 @@
                     <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}</td>
                     <td>{{ $data->jam_mulai }}</td>
                     <td>{{ $data->jam_selesai }}</td>
-                    <td>{{ $data->status }}</td>
+                    <td>{{ ucfirst($data->status) }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="7" style="text-align: center;">Data tidak ditemukan.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 

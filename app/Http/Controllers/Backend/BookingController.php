@@ -17,15 +17,31 @@ class BookingController extends Controller
 {
     public function export()
     {
-        $bookings = Booking::all();
+        $query = Booking::with(['user', 'ruang']);
+
+        if (request()->filled('ruang_id')) {
+            $query->where('ruang_id', request('ruang_id'));
+        }
+
+        if (request()->filled('tanggal')) {
+            $query->where('tanggal', request('tanggal'));
+        }
+
+        if (request()->filled('status')) {
+            $query->where('status', request('status'));
+        }
+
+        $bookings = $query->orderBy('tanggal')->get();
+
         $pdf = Pdf::loadView('backend.booking.pdfbookings', ['booking' => $bookings]);
         return $pdf->download('laporan-data-bookings.pdf');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $now = Carbon::now();
 
+        // Update otomatis status jadi 'selesai'
         Booking::whereIn('status', ['pending', 'diterima'])
             ->where(function ($data) use ($now) {
                 $data->whereDate('tanggal', '<', $now->toDateString())->orWhere(function ($waktu) use ($now) {
@@ -34,10 +50,25 @@ class BookingController extends Controller
             })
             ->update(['status' => 'selesai']);
 
-        $bookings = Booking::with(['user', 'ruang'])
-            ->latest()
-            ->get();
-        return view('backend.booking.index', compact('bookings'));
+        // Filter query
+        $query = Booking::with(['user', 'ruang']);
+
+        if ($request->filled('ruang_id')) {
+            $query->where('ruang_id', $request->ruang_id);
+        }
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $bookings = $query->latest()->get();
+        $ruangs = Ruang::all();
+
+        return view('backend.booking.index', compact('bookings', 'ruangs'));
     }
 
     public function create()
@@ -218,6 +249,4 @@ class BookingController extends Controller
         toast('Booking berhasil dihapus.', 'success')->autoClose(3000);
         return redirect()->route('backend.booking.index');
     }
-
-
 }

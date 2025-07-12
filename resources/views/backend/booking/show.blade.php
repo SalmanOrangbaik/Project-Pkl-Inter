@@ -28,10 +28,12 @@
                             <strong>Status:</strong>
                             @if ($booking->status === 'pending')
                                 <span class="badge bg-warning text-dark">Pending</span>
-                            @elseif ($booking->status === 'cancel')
-                                <span class="badge bg-danger">Cancel</span>
+                            @elseif ($booking->status === 'ditolak')
+                                <span class="badge bg-danger">Ditolak</span>
+                            @elseif ($booking->status === 'diterima')
+                                <span class="badge bg-primary">Diterima</span>
                             @else
-                                <span class="badge bg-success">Completed</span>
+                                <span class="badge bg-success">Selesai</span>
                             @endif
                         </div>
                         <a href="{{ route('backend.booking.index') }}" class="btn btn-secondary mt-3">Kembali</a>
