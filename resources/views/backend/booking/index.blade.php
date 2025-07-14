@@ -25,9 +25,9 @@
                                     <div class="col-md-3 mb-2">
                                         <select name="ruang_id" class="form-select">
                                             <option value="">-- Filter Ruangan --</option>
-                                            @foreach ($ruangs as $ruang)
-                                                <option value="{{ $ruang->id }}" {{ request('ruang_id') == $ruang->id ? 'selected' : '' }}>
-                                                    {{ $ruang->nama }}
+                                            @foreach ($ruangs as $data)
+                                                <option value="{{ $data->id }}" {{ request('ruang_id') == $data->id ? 'selected' : '' }}>
+                                                    {{ $data->nama }}
                                                 </option>
                                             @endforeach
                                         </select>

@@ -17,21 +17,21 @@ class BookingController extends Controller
 {
     public function export()
     {
-        $query = Booking::with(['user', 'ruang']);
+        $filter = Booking::with(['user', 'ruang']);
 
         if (request()->filled('ruang_id')) {
-            $query->where('ruang_id', request('ruang_id'));
+            $filter->where('ruang_id', request('ruang_id'));
         }
 
         if (request()->filled('tanggal')) {
-            $query->where('tanggal', request('tanggal'));
+            $filter->where('tanggal', request('tanggal'));
         }
 
         if (request()->filled('status')) {
-            $query->where('status', request('status'));
+            $filter->where('status', request('status'));
         }
 
-        $bookings = $query->orderBy('tanggal')->get();
+        $bookings = $filter->orderBy('tanggal')->get();
 
         $pdf = Pdf::loadView('backend.booking.pdfbookings', ['booking' => $bookings]);
         return $pdf->download('laporan-data-bookings.pdf');
