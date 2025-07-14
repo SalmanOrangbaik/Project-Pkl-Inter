@@ -25,9 +25,9 @@
                         <div class="navbar-nav ms-auto py-0">
                             <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
                             <a href="{{ route('booking.create') }}" class="nav-item nav-link {{ request()->is('booking/create') ? 'active' : '' }}">Booking</a>
-                            <a href="{{ route('booking_ruangan')}}" class="nav-item nav-link">Ruangan</a>
+                            <a href="{{ route('booking_ruangan')}}" class="nav-item nav-link {{ request()->is('booking/ruangan') ? 'active' : '' }}">Ruangan</a>
                             @auth
-                            <a href="{{ route('booking_riwayat')}}" class="nav-item nav-link">Riwayat</a>
+                            <a href="{{ route('booking_riwayat')}}" class="nav-item nav-link {{ request()->is('booking/riwayat') ? 'active' : '' }}">Riwayat</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
@@ -12,10 +13,8 @@ class FrontendController extends Controller
     {
         $ruang = Ruang::take(3)->get();
 
-        // Ambil semua booking dan jadwal
         $bookings = Booking::with('ruang')->get();
         $jadwals  = Jadwal::with('ruang')->get();
-
 
         $events = [];
 
@@ -24,16 +23,18 @@ class FrontendController extends Controller
                 'title' => 'Booking - ' . ($booking->ruang->nama ?? 'Tanpa Ruangan'),
                 'start' => $booking->tanggal . 'T' . $booking->jam_mulai,
                 'end'   => $booking->tanggal . 'T' . $booking->jam_selesai,
-                'color' => '#f39c12',
+                'color' => '#ffc107', // Kuning (Booking Diterima / Selesai)
+                'description' => 'Booking oleh: ' . ($booking->user->name ?? 'Pengguna'),
             ];
         }
 
-        foreach ($jadwals as $jadwalItem) {
+        foreach ($jadwals as $data) {
             $events[] = [
-                'title' => 'Jadwal - ' . ($jadwalItem->ruang->nama ?? 'Tanpa Ruangan'),
-                'start' => $jadwalItem->tanggal . 'T' . $jadwalItem->jam_mulai,
-                'end'   => $jadwalItem->tanggal . 'T' . $jadwalItem->jam_selesai,
-                'color' => '#3498db',
+                'title' => 'Jadwal - ' . ($data->ruang->nama ?? 'Tanpa Ruangan'),
+                'start' => $data->tanggal . 'T' . $data->jam_mulai,
+                'end'   => $data->tanggal . 'T' . $data->jam_selesai,
+                'color' => '#0dcaf0', // Biru (Jadwal Tetap)
+                'description' => 'Jadwal Tetap - ' . ($data->keterangan ?? '-'),
             ];
         }
 
