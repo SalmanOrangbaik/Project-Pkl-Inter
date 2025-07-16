@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Jadwal;
 use App\Models\Ruang;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
@@ -14,7 +15,7 @@ class FrontendController extends Controller
         $ruang = Ruang::take(3)->get();
 
         $bookings = Booking::with('ruang')->get();
-        $jadwals  = Jadwal::with('ruang')->get();
+        $jadwals = Jadwal::with('ruang')->get();
 
         $events = [];
 
@@ -22,7 +23,7 @@ class FrontendController extends Controller
             $events[] = [
                 'title' => 'Booking - ' . ($booking->ruang->nama ?? 'Tanpa Ruangan'),
                 'start' => $booking->tanggal . 'T' . $booking->jam_mulai,
-                'end'   => $booking->tanggal . 'T' . $booking->jam_selesai,
+                'end' => $booking->tanggal . 'T' . $booking->jam_selesai,
                 'color' => '#ffc107', // Kuning (Booking Diterima / Selesai)
                 'description' => 'Booking oleh: ' . ($booking->user->name ?? 'Pengguna'),
             ];
@@ -32,7 +33,7 @@ class FrontendController extends Controller
             $events[] = [
                 'title' => 'Jadwal - ' . ($data->ruang->nama ?? 'Tanpa Ruangan'),
                 'start' => $data->tanggal . 'T' . $data->jam_mulai,
-                'end'   => $data->tanggal . 'T' . $data->jam_selesai,
+                'end' => $data->tanggal . 'T' . $data->jam_selesai,
                 'color' => '#0dcaf0', // Biru (Jadwal Tetap)
                 'description' => 'Jadwal Tetap - ' . ($data->keterangan ?? '-'),
             ];
@@ -41,10 +42,29 @@ class FrontendController extends Controller
         return view('index', compact('ruang', 'events'));
     }
 
-    public function riwayat()
+    public function riwayat(Request $request)
     {
         $booking = Booking::where('user_id', Auth::id())->latest()->get();
-        return view('booking_riwayat', compact('booking'));
+        $ruangs = Ruang::all();
+
+        $data = Booking::with('ruang')->where('user_id', Auth::id());
+
+        if ($request->filled('ruang_id')) {
+            $data->where('ruang_id', $request->ruang_id);
+        }
+
+        if ($request->filled('tanggal')) {
+            $data->whereDate('tanggal', $request->tanggal);
+        }
+
+        if ($request->filled('status')) {
+            $data->where('status', $request->status);
+        }
+
+        $booking = $data->latest()->get();
+        $ruangs = Ruang::all();
+
+        return view('booking_riwayat', compact('booking', 'ruangs'));
     }
 
     public function ruangan()

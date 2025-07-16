@@ -51,21 +51,21 @@ class BookingController extends Controller
             ->update(['status' => 'selesai']);
 
         // Filter query
-        $query = Booking::with(['user', 'ruang']);
+        $data = Booking::with(['user', 'ruang']);
 
         if ($request->filled('ruang_id')) {
-            $query->where('ruang_id', $request->ruang_id);
+            $data->where('ruang_id', $request->ruang_id);
         }
 
         if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
+            $data->whereDate('tanggal', $request->tanggal);
         }
 
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $data->where('status', $request->status);
         }
 
-        $bookings = $query->latest()->get();
+        $bookings = $data->latest()->get();
         $ruangs = Ruang::all();
 
         return view('backend.booking.index', compact('bookings', 'ruangs'));

@@ -12,7 +12,7 @@
                     <div class="carousel-caption-inner text-start p-3">
                         <h1 class="display-1 text-white mb-4">SIRUANG</h1>
                         <h3 class="mb-4 text-white">
-                            Sistem Penjadwalan Ruangan Kelas dan Laboratorium. Digital, efisien, dan bebas bentrok jadwal.
+                            Sistem Penjadwalan Ruangan.
                         </h3>
                         <a href="{{ route('booking.create') }}"
                             class="btn btn-outline-primary px-4 py-2 rounded-pill">Booking Sekarang</a>

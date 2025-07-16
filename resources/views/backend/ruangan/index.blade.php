@@ -7,7 +7,7 @@
                     <div class="card">
                         <div class="card-body performane-indicator-card">
                             <div class="d-sm-flex">
-                                <h4 class="card-title flex-shrink-1">Data User</h4>
+                                <h4 class="card-title flex-shrink-1">Data Ruang</h4>
                             </div>
                             <div class="container">
                                 <div class="row justify-content-center">
@@ -41,7 +41,7 @@
                                                                 <td>{{ $loop->iteration }}</td>
                                                                 <td>{{ $data->nama }} </td>
                                                                 <td>{{ $data->kapasitas }}</td>
-                                                                <td>{{ $data->fasilitas }}</td>
+                                                                <td>{{ Str::limit($data->fasilitas, 50) }}</td>
                                                                 <td><img src="{{ asset('storage/' . $data->cover) }}"
                                                                         alt="cover"
                                                                         style="width: 150px; height: auto; border-radius: 8px;">
