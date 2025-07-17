@@ -87,6 +87,13 @@ class BookingController extends Controller
             'ruang_id' => 'required|exists:ruangs,id',
         ]);
 
+        //cek jadwal sudah lewat atau blm
+        $tanggalBooking = Carbon::parse($request->tanggal);
+        if ($tanggalBooking->isBefore(Carbon::today())) {
+            toast('Tanggal booking tidak boleh di hari yang sudah lewat.', 'error')->autoClose(4000);
+            return back()->withInput();
+        }
+
         // Cek bentrok dengan booking lain
         $bentrok = Booking::where('ruang_id', $request->ruang_id)
             ->where('tanggal', $request->tanggal)
@@ -174,6 +181,13 @@ class BookingController extends Controller
             'jam_selesai' => 'required|after:jam_mulai',
             'status' => 'required|in:pending,selesai,ditolak,diterima',
         ]);
+
+        //cek tanggal
+        $tanggalBooking = Carbon::parse($request->tanggal);
+        if ($tanggalBooking->isBefore(Carbon::today())) {
+            toast('Tidak bisa mengubah booking ke tanggal yang sudah lewat.', 'error')->autoClose(4000);
+            return back()->withInput();
+        }
 
         $booking = Booking::findOrFail($id);
 

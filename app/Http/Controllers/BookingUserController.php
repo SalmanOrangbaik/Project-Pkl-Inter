@@ -14,7 +14,7 @@ class BookingUserController extends Controller
 {
     public function create(Request $request)
     {
-        $ruang_id = $request->query('ruang_id'); // Ambil dari URL
+        $ruang_id = $request->query('ruang_id');
         $ruang = Ruang::all();
 
         return view('booking_create', compact('ruang', 'ruang_id'));
@@ -32,6 +32,13 @@ class BookingUserController extends Controller
         $tanggalInput = Carbon::parse($request->tanggal)->format('Y-m-d');
         $hariIni = Carbon::now()->format('Y-m-d');
 
+        
+        if ($tanggalInput < $hariIni) {
+            Alert::toast('Tidak bisa booking di tanggal yang sudah lewat.', 'error')->autoClose(4000);
+            return back()->withInput();
+        }
+
+        // Cek jika hari ini dan waktu selesai sudah lewat
         if ($tanggalInput === $hariIni) {
             $jamSelesai = Carbon::parse($request->tanggal . ' ' . $request->jam_selesai);
             if ($jamSelesai->lt(Carbon::now())) {
